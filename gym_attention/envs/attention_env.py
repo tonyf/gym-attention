@@ -1,4 +1,5 @@
 from attention_board import AttentionBoard
+from board_display import *
 
 from gym import Env, error, spaces, utils
 from gym.utils import seeding
@@ -14,6 +15,7 @@ class AttentionEnv(Env):
 
   def __init__(self):
       self.board = AttentionBoard(SIZE)
+      self.display = None
 
   def _step(self, action):
       reward = self.board.reward(action)
@@ -22,8 +24,9 @@ class AttentionEnv(Env):
 
   def _reset(self):
       self.board = AttentionBoard(SIZE)
-      return self.board.board()
+      return self.board.board
 
   def _render(self, mode='human', close=False):
-      image = self.board.image()
-      image.show()
+      if self.display == None:
+          self.display = BoardDisplay(SIZE, SIZE)
+      self.display.render_update(self.board)
