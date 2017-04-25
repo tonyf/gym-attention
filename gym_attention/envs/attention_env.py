@@ -26,7 +26,7 @@ class AttentionEnv(Env):
       self.board = AttentionBoard(SIZE)
       return self.board.board
 
-  def _render(self, mode='human', close=False):
+  def _render(self, mode, close=False):
       if mode == 'human':
           if self.display == None:
               self.display = BoardDisplay(SIZE, SIZE)
