@@ -11,7 +11,7 @@ import math
 SIZE = 84
 
 class AttentionEnv(Env):
-  metadata = {'render.modes': ['human']}
+  metadata = {'render.modes': ['human', 'array']}
 
   def __init__(self):
       self.board = AttentionBoard(SIZE)
@@ -26,7 +26,7 @@ class AttentionEnv(Env):
       self.board = AttentionBoard(SIZE)
       return self.board.board
 
-  def _render(self, mode, close=False):
+  def _render(self, mode='array', close=False):
       if mode == 'human':
           if self.display == None:
               self.display = BoardDisplay(SIZE, SIZE)
