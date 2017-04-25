@@ -2,29 +2,39 @@ from PIL import Image
 import numpy as np
 import random
 
+NUM_MOVES=6
+
+class Moves:
+    LEFT, RIGHT, UP, DOWN, LEFT_UP, RIGHT_UP, LEFT_DOWN, RIGHT_DOWN = range(8)
+
 class AttentionBoard(object):
     def __init__(self, size, start_pos=None, timestep=1):
-        self.board = np.zeros((size, size))
+        self.board = np.zeros((size, size), dtype=float)
         self.time = 0
         self.size = size
         self.radius = 0
         self.timestep = 0.25
-        self.pos = np.array(start_pos, dtype=int) if start_pos else np.array([size/2, size/2])
+        self.pos = np.array(start_pos, dtype=float) if start_pos else np.array([size/2, size/2], dtype=float)
         self.velocity = np.zeros((2))
         self.acceleration = np.zeros((2))
         self.update_board(self.pos)
         self.attention = np.zeros((2))
 
+    def move(self, action):
+        if action >= NUM_MOVES:
+            return 0
+
+
     """ Get reward for being attentive to a certain pixel """
     def reward(self, attention, scale=1, mode='distance'):
         self.attention = np.array(attention)
         if self.attention.all() == self.pos.all():
-            return 1 * scale
+            return 1.0 * scale
         if mode == 'binary':
-            return 0
+            return 0.0
         if mode == 'distance':
             d = np.linalg.norm(self.pos - self.attention)
-            return -(d * d)
+            return float(-(d * d))
 
 
     """ Get image from board """

@@ -8,7 +8,7 @@ import numpy as np
 import sys
 import math
 
-SIZE = 80
+SIZE = 84
 
 class AttentionEnv(Env):
   metadata = {'render.modes': ['human']}
@@ -27,6 +27,8 @@ class AttentionEnv(Env):
       return self.board.board
 
   def _render(self, mode='human', close=False):
-      if self.display == None:
-          self.display = BoardDisplay(SIZE, SIZE)
-      self.display.render_update(self.board)
+      if mode == 'human':
+          if self.display == None:
+              self.display = BoardDisplay(SIZE, SIZE)
+          self.display.render_update(self.board)
+      return self.board.board
