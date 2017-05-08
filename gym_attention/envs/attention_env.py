@@ -17,7 +17,7 @@ class AttentionEnv:
 
     def __init__(self):
         self.board = AttentionBoard(SIZE)
-        self.display = BoardDisplay(SIZE, SIZE)
+        self.display = None
         self.reward = 0.
 
     def step(self, action):
@@ -32,5 +32,7 @@ class AttentionEnv:
 
     def render(self, mode='human', close=False):
         if mode == 'human':
+            if self.display == None:
+                self.display = BoardDisplay(SIZE, SIZE)
             self.display.render_update(self.board)
         return self.board.image()
