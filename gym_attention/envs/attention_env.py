@@ -4,31 +4,33 @@ from board_display import *
 from gym import Env, error, spaces, utils
 from gym.utils import seeding
 
+from PIL import Image
+
 import numpy as np
 import sys
 import math
 
-SIZE = 84
+SIZE=84
 
-class AttentionEnv(Env):
-  metadata = {'render.modes': ['human', 'array']}
+class AttentionEnv:
+    metadata = {'render.modes': ['human', 'array']}
 
-  def __init__(self):
-      self.board = AttentionBoard(SIZE)
-      self.display = None
+    def __init__(self):
+        self.board = AttentionBoard(SIZE)
+        self.display = BoardDisplay(SIZE, SIZE)
+        self.reward = 0.
 
-  def _step(self, action):
-      reward = self.board.reward(action)
-      obs = self.board.next()
-      return (obs, reward, False, None)
+    def step(self, action):
+        self.reward += self.board.step(action)
+        obs = self.board.next()
+        return (obs, self.reward, False, None)
 
-  def _reset(self):
-      self.board = AttentionBoard(SIZE)
-      return self.board.board
+    def reset(self):
+        self.board = AttentionBoard(SIZE)
+        self.reward = 0.
+        return self.board.image()
 
-  def _render(self, mode='array', close=False):
-      if mode == 'human':
-          if self.display == None:
-              self.display = BoardDisplay(SIZE, SIZE)
-          self.display.render_update(self.board)
-      return self.board.board
+    def render(self, mode='human', close=False):
+        if mode == 'human':
+            self.display.render_update(self.board)
+        return self.board.image()
