@@ -15,8 +15,11 @@ SIZE=84
 class AttentionEnv:
     metadata = {'render.modes': ['human', 'array']}
 
-    def __init__(self):
-        self.board = AttentionBoard(SIZE)
+    def __init__(self, complex=False):
+        if complex:
+            self.board = AttentionBoard2(SIZE)
+        else:
+            self.board = AttentionBoard(SIZE)
         self.display = None
         self.reward = 0.
 
