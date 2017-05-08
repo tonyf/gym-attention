@@ -24,7 +24,7 @@ class AttentionEnv:
         self.reward = 0.
 
     def step(self, action):
-        self.reward += self.board.step(action)
+        self.reward = self.board.step(action)
         obs = self.board.next()
         return (obs, self.reward, False, None)
 
